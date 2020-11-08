@@ -6,7 +6,7 @@ BUILD_DIR="${SRC_DIR}/build"
 # Platform List: https://openwrt.org/docs/platforms/start
 # Release Page: https://downloads.openwrt.org/releases/19.07.3/targets/
 IB_URL="https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-imagebuilder-x86-64.Linux-x86_64.tar.xz"
-IB_SUM="8ab5cf260415a55b164085717629c17380d260b932667781abebdff2259f3453"
+IB_SUM="c127ea680eb43d61f13e879d83bb8ce9f5563cf67eb671d1980a4273569302e2"
 
 IB_FILE=$(basename $IB_URL)
 
@@ -79,7 +79,7 @@ kmod-fs-ext4 \
 kmod-fs-vfat \
 kmod-wireguard \
 kmod-fs-xfs \
-luci-app-vnstat \
+luci-app-vnstat2 \
 luci-app-wireguard \
 luci-ssl-nginx \
 ookla-speedtest \
@@ -91,7 +91,7 @@ stubby \
 tcpdump \
 usbutils \
 vim-fuller \
-vnstat \
+vnstat2 \
 wget \
 wireguard-tools"
 
