@@ -6,7 +6,7 @@ BUILD_DIR="${SRC_DIR}/build"
 # Platform List: https://openwrt.org/docs/platforms/start
 # Release Page: https://downloads.openwrt.org/releases/19.07.3/targets/
 IB_URL="https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-imagebuilder-x86-64.Linux-x86_64.tar.xz"
-IB_SUM="c127ea680eb43d61f13e879d83bb8ce9f5563cf67eb671d1980a4273569302e2"
+IB_SUM="cf9d0203515b6d7fed25505449ccf3e3763ef6955d6b66f03f354f14bc2bc1cb"
 
 IB_FILE=$(basename $IB_URL)
 
@@ -47,7 +47,11 @@ sed -i 's/CONFIG_GRUB_EFI_IMAGES=y/CONFIG_GRUB_EFI_IMAGES=n/' .config || exit 1
 #echo " - squashfs images"
 #sed -i 's/CONFIG_TARGET_ROOTFS_SQUASHFS=y/CONFIG_TARGET_ROOTFS_SQUASHFS=n/' .config || exit 1
 
+# Add Pyther repository and public signing key
+RLINE="src/gz pyther https://bolt.gyurgyik.io/openwrt/snapshots/x86_64/pyther/"
+grep -qxF $RLINE repositories.conf || echo $RLINE >> repositories.conf
 echo "src/gz pyther https://bolt.gyurgyik.io/openwrt/snapshots/x86_64/pyther/" >> repositories.conf
+echo -e "untrusted comment: OpenWrt usign key of Matthew Gyurgyik\nRWRH3uo4B4x71cC2HLGFhkjbsHHCys6QzGplkB2LVtT9KqLw8DrzZShd" > keys/47deea38078c7bd5
 
 HARDWARE="\
 kmod-pcengines-apuv2 \
@@ -62,8 +66,10 @@ flashrom irqbalance fstrim"
 PKGS="\
 bind-dig \
 bind-host \
+blkid \
 block-mount \
 ca-bundle \
+coreutils-dd \
 curl \
 diffutils \
 ethtool \
@@ -82,6 +88,7 @@ kmod-fs-xfs \
 luci-app-vnstat2 \
 luci-app-wireguard \
 luci-ssl-nginx \
+mount-utils \
 ookla-speedtest \
 openssh-server \
 pciutils \
@@ -95,4 +102,5 @@ vnstat2 \
 wget \
 wireguard-tools"
 
-make image PACKAGES="$HARDWARE $PKGS -kmod-r8169 -ppp -ppp-mod-pppoe" || exit 1
+#make image PACKAGES="$HARDWARE $PKGS -kmod-r8169 -ppp -ppp-mod-pppoe" || exit 1
+make image V=sc PACKAGES="$HARDWARE $PKGS -kmod-r8169 -ppp -ppp-mod-pppoe" || exit 1
